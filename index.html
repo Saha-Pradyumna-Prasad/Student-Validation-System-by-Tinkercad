@@ -1,308 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpeg" href="images/logo.png">
-    <title>Student Validation System - Interactive Project</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Student Validation System: an Arduino UNO, 4x4 keypad and LCD microprocessor project with a live interactive demo.">
+<meta name="theme-color" content="#0e1411">
+<link rel="icon" type="image/png" href="images/logo.png">
+<title>Student Validation System | Arduino Project</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Particle Animation Background -->
-    <div id="particles-js"></div>
+<div class="bar" id="bar"></div>
+<div id="particles-js"></div>
 
-    <!-- Hero Section -->
-    <header class="hero-section d-flex align-items-center">
-        <div class="container text-center text-white">
-            <h1 class="display-4 fw-bold text-glow">Student Validation System</h1>
-            <p class="lead mt-3">A Microprocessor Course Project using Arduino UNO, Keypad & LCD</p>
-            
-            <!-- Tinkercad Link -->
-            <a href="https://www.tinkercad.com/things/ioFsJeWoJS2-student-validation-system?fbclid=IwZXh0bgNhZW0CMTAAcGRvZgFicmlkETFhVVhnRUo3aWR0S0d4a1h3c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABH76UL9G1wL6Iy5DmmUnBp3P_p37orDpK9caaReJBJ1WxqLBQeKggzHmQQ-gV_aem_ru-i2dY3EC13yRAFHNqcRw" target="_blank" class="btn btn-custom btn-lg mt-4">
-                <i class="fas fa-external-link-alt"></i> View Live Simulation on Tinkercad
-            </a>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="nav">
+  <div class="container">
+    <a class="navbar-brand" href="#demo"><i class="fas fa-microchip"></i>Student Validation</a>
+    <button class="navbar-toggler border-0" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Toggle menu"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="#demo">Live demo</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">How it works</a></li>
+        <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="#hardware">Hardware</a></li>
+        <li class="nav-item"><a class="nav-link" href="#circuit">Circuit</a></li>
+        <li class="nav-item"><a class="nav-link" href="#code">Code</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero with live demo -->
+<header class="hero" id="demo">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6 intro">
+        <span class="status"><span class="pulse"></span>Microprocessor course project</span>
+        <h1>Student Validation System</h1>
+        <p class="lead">Type a 3-digit student ID on the keypad and press #. An Arduino UNO checks it against its database, then answers with a message on the LCD, an LED and a buzzer tone.</p>
+        <div class="d-flex flex-wrap gap-3">
+          <a class="btn btn-copper" href="https://www.tinkercad.com/things/ioFsJeWoJS2-student-validation-system" target="_blank" rel="noopener"><i class="fas fa-external-link-alt me-2"></i>Open Tinkercad simulation</a>
+          <a class="btn btn-line" href="#code"><i class="fas fa-code me-2"></i>Read the source</a>
         </div>
-    </header>
+        <p class="hint">The board on the right is live. Use the keypad or your keyboard: <kbd>0-9</kbd> enter digits, <kbd>Enter</kbd> submits (#), <kbd>Esc</kbd> clears (*).</p>
+      </div>
 
-    <!-- NEW SECTION: Interactive Live Demo -->
-    <section class="container py-5">
-        <h2 class="text-center text-white mb-5 text-glow">Interactive Live Demo</h2>
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="card glass-card p-4">
-                    <div class="row align-items-center">
-                        
-                        <!-- Virtual Hardware UI -->
-                        <div class="col-md-6 mb-4 mb-md-0 d-flex flex-column align-items-center">
-                            <!-- LEDs & Buzzer Indicator -->
-                            <div class="d-flex justify-content-center gap-4 mb-3">
-                                <div class="led-indicator">
-                                    <div class="led green-led" id="greenLed"></div>
-                                    <small class="text-light mt-1 d-block text-center">Valid</small>
-                                </div>
-                                <div class="led-indicator">
-                                    <div class="led red-led" id="redLed"></div>
-                                    <small class="text-light mt-1 d-block text-center">Error</small>
-                                </div>
-                            </div>
-                            
-                            <!-- LCD Display -->
-                            <div class="lcd-screen w-100 mb-3">
-                                <div class="lcd-line" id="lcdLine1">Smart ID System</div>
-                                <div class="lcd-line" id="lcdLine2">Enter 3-Digit ID</div>
-                            </div>
-                        </div>
-
-                        <!-- Virtual Keypad UI -->
-                        <div class="col-md-6">
-                            <div class="keypad-grid">
-                                <button class="key-btn" onclick="pressKey('1')">1</button>
-                                <button class="key-btn" onclick="pressKey('2')">2</button>
-                                <button class="key-btn" onclick="pressKey('3')">3</button>
-                                <button class="key-btn" onclick="pressKey('A')">A</button>
-
-                                <button class="key-btn" onclick="pressKey('4')">4</button>
-                                <button class="key-btn" onclick="pressKey('5')">5</button>
-                                <button class="key-btn" onclick="pressKey('6')">6</button>
-                                <button class="key-btn" onclick="pressKey('B')">B</button>
-
-                                <button class="key-btn" onclick="pressKey('7')">7</button>
-                                <button class="key-btn" onclick="pressKey('8')">8</button>
-                                <button class="key-btn" onclick="pressKey('9')">9</button>
-                                <button class="key-btn" onclick="pressKey('C')">C</button>
-
-                                <button class="key-btn key-red" onclick="pressKey('*')">*</button>
-                                <button class="key-btn" onclick="pressKey('0')">0</button>
-                                <button class="key-btn key-green" onclick="pressKey('#')">#</button>
-                                <button class="key-btn" onclick="pressKey('D')">D</button>
-                            </div>
-                            <p class="text-center text-muted mt-3 small"><i class="fas fa-info-circle"></i> Try IDs: <b>159</b>, <b>113</b>, <b>153</b>, <b>120</b></p>
-                        </div>
-                    </div>
-                </div>
+      <div class="col-lg-6">
+        <div class="board" aria-label="Interactive Arduino demo">
+          <div class="board-top">
+            <div class="inds">
+              <span class="ind"><span class="led green" id="greenLed"></span>Valid</span>
+              <span class="ind"><span class="led red" id="redLed"></span>Error</span>
+              <span class="ind"><i class="fas fa-bell" id="buzzer"></i>Buzzer</span>
             </div>
+            <button class="mute" id="muteBtn" aria-label="Toggle sound" aria-pressed="false"><i class="fas fa-volume-high"></i></button>
+          </div>
+          <div class="lcd" aria-live="polite"><div id="lcdLine1"></div><div id="lcdLine2"></div></div>
+          <div class="id-card" id="idCard"></div>
+          <div class="keypad" id="keypad"></div>
+          <div class="chips" id="chips"><span>Sample IDs:</span></div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</header>
 
-    <!-- Project Details Section -->
-    <section class="container py-5 mt-5">
-        <div class="row g-4">
-            <!-- Components Used -->
-            <div class="col-md-4">
-                <div class="card glass-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-3">
-                            <h3 class="card-title text-info mb-0"><i class="fas fa-tools"></i> Hardware Used</h3>
-                        </div>
-                        <ul class="list-group list-group-flush bg-transparent text-light mt-3">
-                            <li class="list-group-item bg-transparent text-light border-secondary d-flex align-items-center">
-                                <img src="images/arduino.png" alt="Arduino" class="list-icon me-3">
-                                Arduino Uno R3
-                            </li>
-                            <li class="list-group-item bg-transparent text-light border-secondary d-flex align-items-center">
-                                <img src="images/keypad.png" alt="Keypad" class="list-icon me-3">
-                                4x4 Keypad
-                            </li>
-                            <li class="list-group-item bg-transparent text-light border-secondary d-flex align-items-center">
-                                <img src="images/lcd.png" alt="LCD" class="list-icon me-3">
-                                16x2 LCD Display
-                            </li>
-                            <li class="list-group-item bg-transparent text-light border-secondary d-flex align-items-center">
-                                <img src="images/buzzer.png" alt="Buzzer" class="list-icon me-3">
-                                Piezo Buzzer & LEDs
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Project Overview -->
-            <div class="col-md-8">
-                <div class="card glass-card h-100">
-                    <div class="card-body">
-                        <h3 class="card-title text-success"><i class="fas fa-info-circle"></i> How it Works</h3>
-                        <p class="text-light mt-3">
-                            This system is designed to validate student IDs. A user enters a 3-digit ID using the 4x4 Keypad and presses '#' to submit. 
-                            The Arduino cross-references the ID with a pre-defined database. If the ID is valid, the Green LED lights up, a success tone plays, and student details are shown on the LCD. If invalid, the Red LED flashes with an error tone.
-                        </p>
-                    </div>
-                </div>
-            </div>
+<section class="sec tight" id="specs">
+  <div class="container">
+    <dl class="specs reveal">
+      <div><dt>Microcontroller</dt><dd>ATmega328P on Arduino Uno R3</dd></div>
+      <div><dt>Clock and logic level</dt><dd>16 MHz, 5 V</dd></div>
+      <div><dt>Input</dt><dd>4x4 matrix keypad</dd></div>
+      <div><dt>Output</dt><dd>16x2 LCD, green and red LED, piezo buzzer</dd></div>
+      <div><dt>Libraries</dt><dd>LiquidCrystal, Keypad</dd></div>
+      <div><dt>Database</dt><dd>4 student records, 3-digit IDs</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="sec" id="about">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4 reveal">
+        <h2>How it works</h2>
+        <p>The system validates student IDs. The Arduino compares the entered ID with a built-in list of students. A valid ID lights the green LED, plays a success tone and shows the student's details. An invalid ID flashes the red LED with an error tone.</p>
+      </div>
+      <div class="col-lg-8">
+        <ol class="flow draw">
+          <li><b>Enter the ID</b>Type 3 digits on the 4x4 keypad.</li>
+          <li><b>Submit</b>Press # to send the ID.</li>
+          <li><b>Check</b>The Arduino searches its student database.</li>
+          <li><b>Respond</b>Valid: green LED and success beep. Invalid: red LED and error beep.</li>
+        </ol>
+      </div>
+    </div>
+    <h3 class="tbl-title reveal mt-5 pt-3">What the system does for each input</h3>
+    <div class="table-responsive reveal">
+      <table class="bom">
+        <thead><tr><th>Situation</th><th>LED</th><th>Buzzer</th><th>LCD shows</th><th>On screen for</th></tr></thead>
+        <tbody>
+          <tr><td>Valid ID</td><td>Green</td><td>2000 Hz, then 2500 Hz (200 ms each)</td><td>Name (Dept) and "Status: Valid"</td><td>4 s</td></tr>
+          <tr><td>Unknown ID</td><td>Red</td><td>500 Hz for 800 ms</td><td>The ID and "Invalid ID!"</td><td>3 s</td></tr>
+          <tr><td>Fewer than 3 digits</td><td>Red</td><td>1000 Hz for 500 ms</td><td>"Error: Need 3-ID"</td><td>1.5 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-note reveal">Keypad controls: digits <b>0-9</b> build the ID (3 digits max), <b>#</b> submits it and <b>*</b> clears it.</p>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="sec" id="features">
+  <div class="container">
+    <h2 class="reveal">Key features</h2>
+    <div class="row gx-5 mt-3">
+      <div class="col-md-6 reveal"><div class="feat"><i class="fas fa-bolt"></i><div><h3>Real-time validation</h3><p>Verifies a 3-digit ID the moment you press #.</p></div></div></div>
+      <div class="col-md-6 reveal"><div class="feat"><i class="fas fa-volume-high"></i><div><h3>Sound and light feedback</h3><p>Green LED and a rising tone for valid IDs. Red LED and a low alarm for invalid ones.</p></div></div></div>
+      <div class="col-md-6 reveal"><div class="feat"><i class="fas fa-database"></i><div><h3>Built-in student records</h3><p>Stores each student's name, department and payment status.</p></div></div></div>
+      <div class="col-md-6 reveal"><div class="feat"><i class="fas fa-display"></i><div><h3>Clear LCD messages</h3><p>Shows the student's details or a plain error message on the 16x2 display.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Hardware + BOM -->
+<section class="sec" id="hardware">
+  <div class="container">
+    <h2 class="reveal">Hardware</h2>
+    <div class="row g-5 mt-1">
+      <div class="col-lg-5 reveal">
+        <ul class="hw">
+          <li><img src="images/arduino.png" alt="Arduino"><span>Arduino Uno R3</span></li>
+          <li><img src="images/keypad.png" alt="Keypad"><span>4x4 keypad</span></li>
+          <li><img src="images/lcd.png" alt="LCD"><span>16x2 LCD display</span></li>
+          <li><img src="images/buzzer.png" alt="Buzzer"><span>Piezo buzzer and LEDs</span></li>
+        </ul>
+      </div>
+      <div class="col-lg-7 reveal">
+        <div class="table-responsive">
+          <table class="bom">
+            <thead><tr><th>Name</th><th>Qty</th><th>Component</th></tr></thead>
+            <tbody>
+              <tr><td>U1</td><td>1</td><td>Arduino Uno R3</td></tr>
+              <tr><td>PIEZO1</td><td>1</td><td>Piezo Buzzer</td></tr>
+              <tr><td>KEYPAD1</td><td>1</td><td>Keypad 4x4</td></tr>
+              <tr><td>D1</td><td>1</td><td>Green LED</td></tr>
+              <tr><td>U4</td><td>1</td><td>LCD 16x2</td></tr>
+              <tr><td>R1</td><td>1</td><td>220 &Omega; Resistor</td></tr>
+              <tr><td>D2</td><td>1</td><td>Red LED</td></tr>
+              <tr><td>R2, R3</td><td>2</td><td>1 k&Omega; Resistor</td></tr>
+            </tbody>
+          </table>
         </div>
-    </section>
+      </div>
+    </div>
+    <div class="row g-5 mt-1">
+      <div class="col-lg-6 reveal">
+        <h3 class="tbl-title">Pin connections</h3>
+        <div class="table-responsive"><table class="bom">
+          <thead><tr><th>Part</th><th>Arduino pin</th></tr></thead>
+          <tbody>
+            <tr><td>LCD RS</td><td>D12</td></tr>
+            <tr><td>LCD E</td><td>D11</td></tr>
+            <tr><td>LCD D4 to D7</td><td>D5, D4, D3, D2</td></tr>
+            <tr><td>Keypad rows</td><td>D9, D8, D7, D6</td></tr>
+            <tr><td>Keypad columns</td><td>A3, A2, A1</td></tr>
+            <tr><td>Piezo buzzer</td><td>D13</td></tr>
+            <tr><td>Green LED</td><td>A4</td></tr>
+            <tr><td>Red LED</td><td>A5</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="col-lg-6 reveal">
+        <h3 class="tbl-title">Student records</h3>
+        <div class="table-responsive"><table class="bom">
+          <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Payment</th></tr></thead>
+          <tbody>
+            <tr><td>159</td><td>Ankur</td><td>CSE</td><td><span class="tag paid">Paid</span></td></tr>
+            <tr><td>113</td><td>Manik</td><td>EEE</td><td><span class="tag due">Due</span></td></tr>
+            <tr><td>153</td><td>Tina</td><td>BBA</td><td><span class="tag paid">Paid</span></td></tr>
+            <tr><td>120</td><td>Mahi</td><td>IT</td><td><span class="tag due">Due</span></td></tr>
+          </tbody>
+        </table></div>
+        <p class="tbl-note">These four records live in the <b>students[]</b> array in the sketch.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Key Features & Working Principle -->
-    <section class="container py-5">
-        <div class="row g-4">
-            <div class="col-lg-6">
-                <div class="card glass-card h-100 p-4">
-                    <h3 class="text-warning mb-4"><i class="fas fa-star"></i> Key Features</h3>
-                    <ul class="feature-list text-light">
-                        <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Real-time Validation:</strong> Instantly verifies 3-digit IDs.</li>
-                        <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Audio-Visual Feedback:</strong> Green LED + Success Tone for valid, Red LED + Alarm for invalid.</li>
-                        <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Database Integration:</strong> Stores Student Name, Dept, and Payment Status.</li>
-                        <li><i class="fas fa-check-circle text-success me-2"></i> <strong>LCD Display:</strong> Shows real-time data and error messages.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card glass-card h-100 p-4">
-                    <h3 class="text-primary mb-4"><i class="fas fa-project-diagram"></i> Working Principle</h3>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-icon"><i class="fas fa-keyboard"></i></div>
-                            <div class="timeline-content">User inputs a 3-digit ID via Keypad.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon"><i class="fas fa-hashtag"></i></div>
-                            <div class="timeline-content">Presses '#' to submit the ID.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon"><i class="fas fa-microchip"></i></div>
-                            <div class="timeline-content">Arduino checks the internal database.</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon"><i class="fas fa-check-double"></i></div>
-                            <div class="timeline-content">Valid ID -> Green LED & Success Beep. <br> Invalid ID -> Red LED & Error Beep.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Circuit -->
+<section class="sec" id="circuit">
+  <div class="container">
+    <h2 class="reveal">Circuit design</h2>
+    <div class="row g-4 mt-1">
+      <div class="col-md-6 reveal"><figure class="fig"><img src="images/circuit-diagram.png" alt="Tinkercad circuit" loading="lazy"><figcaption>Fig. 1 Tinkercad 3D circuit view</figcaption></figure></div>
+      <div class="col-md-6 reveal"><figure class="fig"><img src="images/schematic.png" alt="Schematic diagram" loading="lazy"><figcaption>Fig. 2 Schematic diagram</figcaption></figure></div>
+    </div>
+  </div>
+</section>
 
-    <!-- NEW SECTION: Tech Stack & Challenges -->
-    <section class="container py-5">
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card glass-card h-100 p-4">
-                    <h3 class="text-info mb-3"><i class="fas fa-laptop-code"></i> Tech Stack & Tools</h3>
-                    <div class="d-flex flex-wrap gap-2 mt-3">
-                        <span class="badge tech-badge">Arduino IDE</span>
-                        <span class="badge tech-badge">C++</span>
-                        <span class="badge tech-badge">Tinkercad</span>
-                        <span class="badge tech-badge">HTML5</span>
-                        <span class="badge tech-badge">CSS3</span>
-                        <span class="badge tech-badge">Bootstrap 5</span>
-                        <span class="badge tech-badge">JavaScript</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card glass-card h-100 p-4">
-                    <h3 class="text-danger mb-3"><i class="fas fa-lightbulb"></i> Challenges & Learnings</h3>
-                    <ul class="text-light ps-3">
-                        <li class="mb-2">Handling Keypad debounce and proper pin mapping.</li>
-                        <li class="mb-2">Managing LCD display without flickering.</li>
-                        <li class="mb-2">Structuring data (Struct) in C++ for easy database management.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Component List Table -->
-    <section class="container py-5">
-        <h2 class="text-center text-white mb-4 text-glow">Component List</h2>
-        <div class="table-responsive glass-card p-3">
-            <table class="table table-dark table-hover mb-0 text-center">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Component</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>U1</td><td>1</td><td>Arduino Uno R3</td></tr>
-                    <tr><td>PIEZO1</td><td>1</td><td>Piezo Buzzer</td></tr>
-                    <tr><td>KEYPAD1</td><td>1</td><td>Keypad 4x4</td></tr>
-                    <tr><td>D1</td><td>1</td><td>Green LED</td></tr>
-                    <tr><td>U4</td><td>1</td><td>LCD 16x2</td></tr>
-                    <tr><td>R1</td><td>1</td><td>220 Ω Resistor</td></tr>
-                    <tr><td>D2</td><td>1</td><td>Red LED</td></tr>
-                    <tr><td>R2, R3</td><td>2</td><td>1 kΩ Resistor</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <!-- Circuit Images Section -->
-    <section class="container py-5">
-        <h2 class="text-center text-white mb-5 text-glow">Circuit Designs</h2>
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card glass-card">
-                    <img src="images/circuit-diagram.png" class="card-img-top" alt="Tinkercad Circuit">
-                    <div class="card-body text-center">
-                        <h5 class="text-white">Tinkercad 3D Circuit View</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card glass-card">
-                    <img src="images/schematic.png" class="card-img-top" alt="Schematic Diagram">
-                    <div class="card-body text-center">
-                        <h5 class="text-white">Schematic Diagram</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Code Section -->
-    <section class="container py-5 mb-5">
-        <h2 class="text-center text-white mb-4 text-glow">Arduino Source Code</h2>
-        <div class="code-window">
-            <div class="code-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span class="ms-3 text-light font-monospace">StudentValidation.ino</span>
-            </div>
-            <pre><code class="language-cpp">
-#include &lt;LiquidCrystal.h&gt;
+<!-- Code -->
+<section class="sec" id="code">
+  <div class="container">
+    <h2 class="reveal">Arduino source code</h2>
+    <div class="code-win reveal">
+      <div class="code-head">
+        <span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span>
+        <span class="fname">StudentValidation.ino</span>
+        <button class="copy" id="copyBtn"><i class="far fa-copy"></i> Copy</button>
+      </div>
+<pre><code class="language-cpp">#include &lt;LiquidCrystal.h&gt;
 #include &lt;Keypad.h&gt;
 
-// LCD pin setup (RS, E, D4, D5, D6, D7)
+// LCD pins (RS, E, D4, D5, D6, D7)
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-// Keypad configuration (4x3 Keypad)
-const byte ROWS = 4; 
-const byte COLS = 3; 
+// Keypad setup
+const byte ROWS = 4;
+const byte COLS = 3;
 char keys[ROWS][COLS] = {
   {'1','2','3'},
   {'4','5','6'},
   {'7','8','9'},
   {'*','0','#'}
 };
-
-byte rowPins[ROWS] = {9, 8, 7, 6}; 
-byte colPins[COLS] = {A3, A2, A1}; 
-
+byte rowPins[ROWS] = {9, 8, 7, 6};
+byte colPins[COLS] = {A3, A2, A1};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
-// Pin configurations
 const int buzzerPin = 13;
 const int greenLed = A4;
 const int redLed = A5;
 
-// Database structure
+// Student database
 struct Student {
-  String id;
-  String name;
-  String dept;
-  String payment;
+  String id, name, dept, payment;
 };
-
-// You can add more students here
 Student students[] = {
   {"159", "Ankur", "CSE", "Paid"},
   {"113", "Manik", "EEE", "Due"},
@@ -310,17 +252,13 @@ Student students[] = {
   {"120", "Mahi", "IT", "Due"}
 };
 int totalStudents = 4;
-
 String enteredID = "";
 
 void setup() {
   pinMode(buzzerPin, OUTPUT);
   pinMode(greenLed, OUTPUT);
   pinMode(redLed, OUTPUT);
-  
   lcd.begin(16, 2);
-  lcd.clear();
-  lcd.setCursor(0, 0);
   lcd.print("Smart ID System");
   lcd.setCursor(0, 1);
   lcd.print("Enter 3-Digit ID");
@@ -330,47 +268,39 @@ void setup() {
 
 void loop() {
   char key = keypad.getKey();
-  
-  if (key) {
-    // Clear input if '*' is pressed
-    if (key == '*') {
-      enteredID = "";
+  if (!key) return;
+
+  if (key == '*') {            // clear
+    enteredID = "";
+    showHomeScreen();
+    return;
+  }
+
+  if (key == '#') {            // submit
+    if (enteredID.length() == 3) {
+      verifyStudent(enteredID);
+    } else {
+      lcd.clear();
+      lcd.print("Error: Need 3-ID");
+      digitalWrite(redLed, HIGH);
+      tone(buzzerPin, 1000, 500);
+      delay(1500);
+      digitalWrite(redLed, LOW);
       showHomeScreen();
-      return;
     }
-    
-    // Start search if '#' is pressed
-    if (key == '#') {
-      if (enteredID.length() == 3) {
-        verifyStudent(enteredID);
-      } else {
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Error: Need 3-ID");
-        digitalWrite(redLed, HIGH);
-        tone(buzzerPin, 1000, 500);
-        delay(1500);
-        digitalWrite(redLed, LOW);
-        showHomeScreen();
-      }
-      enteredID = "";
-      return;
-    }
-    
-    // While typing numbers
-    if (isDigit(key)) {
-      if (enteredID.length() < 3) {
-        enteredID += key;
-        lcd.setCursor(0, 1);
-        lcd.print("ID: " + enteredID);
-      }
-    }
+    enteredID = "";
+    return;
+  }
+
+  if (isDigit(key) &amp;&amp; enteredID.length() &lt; 3) {
+    enteredID += key;
+    lcd.setCursor(0, 1);
+    lcd.print("ID: " + enteredID);
   }
 }
 
 void showHomeScreen() {
   lcd.clear();
-  lcd.setCursor(0, 0);
   lcd.print("Scan ID & Press#");
   lcd.setCursor(0, 1);
   lcd.print("ID: ");
@@ -379,58 +309,117 @@ void showHomeScreen() {
 void verifyStudent(String id) {
   bool found = false;
   lcd.clear();
-  
-  for (int i = 0; i < totalStudents; i++) {
+
+  for (int i = 0; i &lt; totalStudents; i++) {
     if (students[i].id == id) {
       found = true;
-      // If successful, green LED and positive beep sound
       digitalWrite(greenLed, HIGH);
       tone(buzzerPin, 2000, 200);
       delay(300);
       tone(buzzerPin, 2500, 200);
-      
-      // Display student information and Valid status
-      lcd.setCursor(0, 0);
       lcd.print(students[i].name + " (" + students[i].dept + ")");
       lcd.setCursor(0, 1);
       lcd.print("Status: Valid");
-      
-      delay(4000); // Keep info on display for 4 seconds
+      delay(4000);
       digitalWrite(greenLed, LOW);
       break;
     }
   }
-  
+
   if (!found) {
-    // If ID doesn't match, red LED and error beep sound
     digitalWrite(redLed, HIGH);
-    tone(buzzerPin, 500, 800); // Low pitch beep sound
-    
-    lcd.setCursor(0, 0);
+    tone(buzzerPin, 500, 800);
     lcd.print("ID: " + id);
     lcd.setCursor(0, 1);
     lcd.print("Invalid ID!");
-    
     delay(3000);
     digitalWrite(redLed, LOW);
   }
-  
   showHomeScreen();
-}
-            </code></pre>
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- Tools + lessons -->
+<section class="sec" id="notes">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-md-6 reveal">
+        <h2>Tools used</h2>
+        <div class="stack">
+          <span>Arduino IDE</span><span>C++</span><span>Tinkercad</span><span>HTML5</span><span>CSS3</span><span>Bootstrap 5</span><span>JavaScript</span>
         </div>
-    </section>
+      </div>
+      <div class="col-md-6 reveal">
+        <h2>Challenges and learnings</h2>
+        <ul class="learn">
+          <li><i class="fas fa-check"></i>Handling keypad debounce and correct pin mapping.</li>
+          <li><i class="fas fa-check"></i>Updating the LCD without flicker.</li>
+          <li><i class="fas fa-check"></i>Using a C++ struct to keep the student database tidy.</li>
+        </ul>
+      </div>
+    </div>
+    <h2 class="mt-5 reveal">Ideas for the next version</h2>
+    <ul class="learn reveal">
+      <li><i class="fas fa-arrow-right"></i>Keep records in EEPROM or on an SD card instead of hard-coding them.</li>
+      <li><i class="fas fa-arrow-right"></i>Read IDs from an RFID card instead of typing them.</li>
+      <li><i class="fas fa-arrow-right"></i>Log every scan with a time stamp using an RTC module.</li>
+      <li><i class="fas fa-arrow-right"></i>Lock the keypad for a short time after 3 wrong attempts.</li>
+    </ul>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="text-center py-4 text-light">
-        <p>Powered By <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank" class="dev-link">Dev.Ankur</a></p>
-    </footer>
+<footer>
+  <div class="container d-flex flex-wrap justify-content-between gap-2">
+    <span>Powered by <a href="#" target="_blank" rel="noopener">Dev.Ankur</a></span>
+    <span>Arduino UNO, Keypad and LCD</span>
+  </div>
+</footer>
 
-    <!-- Particles.js for Background Animation -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS (Includes the Live Demo Logic) -->
-    <script src="js/script.js"></script>
+<button class="to-top" id="toTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="js/script.js"></script>
+
+<!-- Web inspect Off code -->
+     <script>
+    // 1. Right Click Block
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // 2. F12 ar Developer Tools Shortcut Block
+    document.addEventListener('keydown', function(e) {
+        if (e.key === "F12" || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+            e.preventDefault();
+            return false;
+        }
+
+        if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // 3. Extra Security
+    setInterval(function() {
+        debugger; 
+    }, 1000); 
+    
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        alert("Copying is disabled on this website.");
+    });
+</script>
 </body>
 </html>
