@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="images/logo.png">
+    <title>Student Validation System - Interactive Project</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Particle Animation Background -->
+    <div id="particles-js"></div>
+
+    <!-- Hero Section -->
+    <header class="hero-section d-flex align-items-center">
+        <div class="container text-center text-white">
+            <h1 class="display-4 fw-bold text-glow">Student Validation System</h1>
+            <p class="lead mt-3">A Microprocessor Course Project using Arduino UNO, Keypad & LCD</p>
+            
+            <!-- Tinkercad Link -->
+            <a href="https://www.tinkercad.com/things/ioFsJeWoJS2-student-validation-system?fbclid=IwZXh0bgNhZW0CMTAAcGRvZgFicmlkETFhVVhnRUo3aWR0S0d4a1h3c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABH76UL9G1wL6Iy5DmmUnBp3P_p37orDpK9caaReJBJ1WxqLBQeKggzHmQQ-gV_aem_ru-i2dY3EC13yRAFHNqcRw" target="_blank" class="btn btn-custom btn-lg mt-4">
+                <i class="fas fa-external-link-alt"></i> View Live Simulation on Tinkercad
+            </a>
+        </div>
+    </header>
+
+    <!-- NEW SECTION: Interactive Live Demo -->
+    <section class="container py-5">
+        <h2 class="text-center text-white mb-5 text-glow">Interactive Live Demo</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card glass-card p-4">
+                    <div class="row align-items-center">
+                        
+                        <!-- Virtual Hardware UI -->
+                        <div class="col-md-6 mb-4 mb-md-0 d-flex flex-column align-items-center">
+                            <!-- LEDs & Buzzer Indicator -->
+                            <div class="d-flex justify-content-center gap-4 mb-3">
+                                <div class="led-indicator">
+                                    <div class="led green-led" id="greenLed"></div>
+                                    <small class="text-light mt-1 d-block text-center">Valid</small>
+                                </div>
+                                <div class="led-indicator">
+                                    <div class="led red-led" id="redLed"></div>
+                                    <small class="text-light mt-1 d-block text-center">Error</small>
+                                </div>
+                            </div>
+                            
+                            <!-- LCD Display -->
+                            <div class="lcd-screen w-100 mb-3">
+                                <div class="lcd-line" id="lcdLine1">Smart ID System</div>
+                                <div class="lcd-line" id="lcdLine2">Enter 3-Digit ID</div>
+                            </div>
+                        </div>
+
+                        <!-- Virtual Keypad UI -->
+                        <div class="col-md-6">
+                            <div class="keypad-grid">
+                                <button class="key-btn" onclick="pressKey('1')">1</button>
+                                <button class="key-btn" onclick="pressKey('2')">2</button>
+                                <button class="key-btn" onclick="pressKey('3')">3</button>
+                                <button class="key-btn" onclick="pressKey('A')">A</button>
+
+                                <button class="key-btn" onclick="pressKey('4')">4</button>
+                                <button class="key-btn" onclick="pressKey('5')">5</button>
+                                <button class="key-btn" onclick="pressKey('6')">6</button>
+                                <button class="key-btn" onclick="pressKey('B')">B</button>
+
+                                <button class="key-btn" onclick="pressKey('7')">7</button>
+                                <button class="key-btn" onclick="pressKey('8')">8</button>
+                                <button class="key-btn" onclick="pressKey('9')">9</button>
+                                <button class="key-btn" onclick="pressKey('C')">C</button>
+
+                                <button class="key-btn key-red" onclick="pressKey('*')">*</button>
+                                <button class="key-btn" onclick="pressKey('0')">0</button>
+                                <button class="key-btn key-green" onclick="pressKey('#')">#</button>
+                                <button class="key-btn" onclick="pressKey('D')">D</button>
+                            </div>
+                            <p class="text-center text-muted mt-3 small"><i class="fas fa-info-circle"></i> Try IDs: <b>159</b>, <b>113</b>, <b>153</b>, <b>120</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Details Section -->
+    <section class="container py-5 mt-5">
+        <div class="row g-4">
+            <!-- Components Used -->
+            <div class="col-md-4">
+                <div class="card glass-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <h3 class="card-title text-info mb-0"><i class="fas fa-tools"></i> Hardware Used</h3>
+                        </div>
+                        <ul class="list-group list-group-flush bg-transparent text-light mt-3">
+                            <li class="list-group-item bg-transparent text-light border-secondary d-flex align-items-center">
+                                <img src="images/arduino.png" alt="Arduino" class="list-icon me-3">
+                                Arduino Uno R3
+                            </li>
+                            <li class="list-group-item bg-transparent text-light border-secondary d-flex align-items-center">
+                                <img src="images/keypad.png" alt="Keypad" class="list-icon me-3">
+                                4x4 Keypad
+                            </li>
+                            <li class="list-group-item bg-transparent text-light border-secondary d-flex align-items-center">
+                                <img src="images/lcd.png" alt="LCD" class="list-icon me-3">
+                                16x2 LCD Display
+                            </li>
+                            <li class="list-group-item bg-transparent text-light border-secondary d-flex align-items-center">
+                                <img src="images/buzzer.png" alt="Buzzer" class="list-icon me-3">
+                                Piezo Buzzer & LEDs
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project Overview -->
+            <div class="col-md-8">
+                <div class="card glass-card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title text-success"><i class="fas fa-info-circle"></i> How it Works</h3>
+                        <p class="text-light mt-3">
+                            This system is designed to validate student IDs. A user enters a 3-digit ID using the 4x4 Keypad and presses '#' to submit. 
+                            The Arduino cross-references the ID with a pre-defined database. If the ID is valid, the Green LED lights up, a success tone plays, and student details are shown on the LCD. If invalid, the Red LED flashes with an error tone.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features & Working Principle -->
+    <section class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card glass-card h-100 p-4">
+                    <h3 class="text-warning mb-4"><i class="fas fa-star"></i> Key Features</h3>
+                    <ul class="feature-list text-light">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Real-time Validation:</strong> Instantly verifies 3-digit IDs.</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Audio-Visual Feedback:</strong> Green LED + Success Tone for valid, Red LED + Alarm for invalid.</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Database Integration:</strong> Stores Student Name, Dept, and Payment Status.</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> <strong>LCD Display:</strong> Shows real-time data and error messages.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card glass-card h-100 p-4">
+                    <h3 class="text-primary mb-4"><i class="fas fa-project-diagram"></i> Working Principle</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="fas fa-keyboard"></i></div>
+                            <div class="timeline-content">User inputs a 3-digit ID via Keypad.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="fas fa-hashtag"></i></div>
+                            <div class="timeline-content">Presses '#' to submit the ID.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="fas fa-microchip"></i></div>
+                            <div class="timeline-content">Arduino checks the internal database.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="fas fa-check-double"></i></div>
+                            <div class="timeline-content">Valid ID -> Green LED & Success Beep. <br> Invalid ID -> Red LED & Error Beep.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Tech Stack & Challenges -->
+    <section class="container py-5">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card glass-card h-100 p-4">
+                    <h3 class="text-info mb-3"><i class="fas fa-laptop-code"></i> Tech Stack & Tools</h3>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <span class="badge tech-badge">Arduino IDE</span>
+                        <span class="badge tech-badge">C++</span>
+                        <span class="badge tech-badge">Tinkercad</span>
+                        <span class="badge tech-badge">HTML5</span>
+                        <span class="badge tech-badge">CSS3</span>
+                        <span class="badge tech-badge">Bootstrap 5</span>
+                        <span class="badge tech-badge">JavaScript</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card glass-card h-100 p-4">
+                    <h3 class="text-danger mb-3"><i class="fas fa-lightbulb"></i> Challenges & Learnings</h3>
+                    <ul class="text-light ps-3">
+                        <li class="mb-2">Handling Keypad debounce and proper pin mapping.</li>
+                        <li class="mb-2">Managing LCD display without flickering.</li>
+                        <li class="mb-2">Structuring data (Struct) in C++ for easy database management.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Component List Table -->
+    <section class="container py-5">
+        <h2 class="text-center text-white mb-4 text-glow">Component List</h2>
+        <div class="table-responsive glass-card p-3">
+            <table class="table table-dark table-hover mb-0 text-center">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Component</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>U1</td><td>1</td><td>Arduino Uno R3</td></tr>
+                    <tr><td>PIEZO1</td><td>1</td><td>Piezo Buzzer</td></tr>
+                    <tr><td>KEYPAD1</td><td>1</td><td>Keypad 4x4</td></tr>
+                    <tr><td>D1</td><td>1</td><td>Green LED</td></tr>
+                    <tr><td>U4</td><td>1</td><td>LCD 16x2</td></tr>
+                    <tr><td>R1</td><td>1</td><td>220 Ω Resistor</td></tr>
+                    <tr><td>D2</td><td>1</td><td>Red LED</td></tr>
+                    <tr><td>R2, R3</td><td>2</td><td>1 kΩ Resistor</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Circuit Images Section -->
+    <section class="container py-5">
+        <h2 class="text-center text-white mb-5 text-glow">Circuit Designs</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card glass-card">
+                    <img src="images/circuit-diagram.png" class="card-img-top" alt="Tinkercad Circuit">
+                    <div class="card-body text-center">
+                        <h5 class="text-white">Tinkercad 3D Circuit View</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card glass-card">
+                    <img src="images/schematic.png" class="card-img-top" alt="Schematic Diagram">
+                    <div class="card-body text-center">
+                        <h5 class="text-white">Schematic Diagram</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Section -->
+    <section class="container py-5 mb-5">
+        <h2 class="text-center text-white mb-4 text-glow">Arduino Source Code</h2>
+        <div class="code-window">
+            <div class="code-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="ms-3 text-light font-monospace">StudentValidation.ino</span>
+            </div>
+            <pre><code class="language-cpp">
+#include &lt;LiquidCrystal.h&gt;
+#include &lt;Keypad.h&gt;
+
+// LCD pin setup (RS, E, D4, D5, D6, D7)
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+// Keypad configuration (4x3 Keypad)
+const byte ROWS = 4; 
+const byte COLS = 3; 
+char keys[ROWS][COLS] = {
+  {'1','2','3'},
+  {'4','5','6'},
+  {'7','8','9'},
+  {'*','0','#'}
+};
+
+byte rowPins[ROWS] = {9, 8, 7, 6}; 
+byte colPins[COLS] = {A3, A2, A1}; 
+
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+// Pin configurations
+const int buzzerPin = 13;
+const int greenLed = A4;
+const int redLed = A5;
+
+// Database structure
+struct Student {
+  String id;
+  String name;
+  String dept;
+  String payment;
+};
+
+// You can add more students here
+Student students[] = {
+  {"159", "Ankur", "CSE", "Paid"},
+  {"113", "Manik", "EEE", "Due"},
+  {"153", "Tina", "BBA", "Paid"},
+  {"120", "Mahi", "IT", "Due"}
+};
+int totalStudents = 4;
+
+String enteredID = "";
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(greenLed, OUTPUT);
+  pinMode(redLed, OUTPUT);
+  
+  lcd.begin(16, 2);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Smart ID System");
+  lcd.setCursor(0, 1);
+  lcd.print("Enter 3-Digit ID");
+  delay(2000);
+  showHomeScreen();
+}
+
+void loop() {
+  char key = keypad.getKey();
+  
+  if (key) {
+    // Clear input if '*' is pressed
+    if (key == '*') {
+      enteredID = "";
+      showHomeScreen();
+      return;
+    }
+    
+    // Start search if '#' is pressed
+    if (key == '#') {
+      if (enteredID.length() == 3) {
+        verifyStudent(enteredID);
+      } else {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Error: Need 3-ID");
+        digitalWrite(redLed, HIGH);
+        tone(buzzerPin, 1000, 500);
+        delay(1500);
+        digitalWrite(redLed, LOW);
+        showHomeScreen();
+      }
+      enteredID = "";
+      return;
+    }
+    
+    // While typing numbers
+    if (isDigit(key)) {
+      if (enteredID.length() < 3) {
+        enteredID += key;
+        lcd.setCursor(0, 1);
+        lcd.print("ID: " + enteredID);
+      }
+    }
+  }
+}
+
+void showHomeScreen() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Scan ID & Press#");
+  lcd.setCursor(0, 1);
+  lcd.print("ID: ");
+}
+
+void verifyStudent(String id) {
+  bool found = false;
+  lcd.clear();
+  
+  for (int i = 0; i < totalStudents; i++) {
+    if (students[i].id == id) {
+      found = true;
+      // If successful, green LED and positive beep sound
+      digitalWrite(greenLed, HIGH);
+      tone(buzzerPin, 2000, 200);
+      delay(300);
+      tone(buzzerPin, 2500, 200);
+      
+      // Display student information and Valid status
+      lcd.setCursor(0, 0);
+      lcd.print(students[i].name + " (" + students[i].dept + ")");
+      lcd.setCursor(0, 1);
+      lcd.print("Status: Valid");
+      
+      delay(4000); // Keep info on display for 4 seconds
+      digitalWrite(greenLed, LOW);
+      break;
+    }
+  }
+  
+  if (!found) {
+    // If ID doesn't match, red LED and error beep sound
+    digitalWrite(redLed, HIGH);
+    tone(buzzerPin, 500, 800); // Low pitch beep sound
+    
+    lcd.setCursor(0, 0);
+    lcd.print("ID: " + id);
+    lcd.setCursor(0, 1);
+    lcd.print("Invalid ID!");
+    
+    delay(3000);
+    digitalWrite(redLed, LOW);
+  }
+  
+  showHomeScreen();
+}
+            </code></pre>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-light">
+        <p>Powered By <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank" class="dev-link">Dev.Ankur</a></p>
+    </footer>
+
+    <!-- Particles.js for Background Animation -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS (Includes the Live Demo Logic) -->
+    <script src="js/script.js"></script>
+</body>
+</html>
