@@ -185,10 +185,10 @@
         <div class="table-responsive"><table class="bom">
           <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Payment</th></tr></thead>
           <tbody>
-            <tr><td>159</td><td>Ankur</td><td>CSE</td><td><span class="tag paid">Paid</span></td></tr>
-            <tr><td>113</td><td>Manik</td><td>EEE</td><td><span class="tag due">Due</span></td></tr>
-            <tr><td>153</td><td>Tina</td><td>BBA</td><td><span class="tag paid">Paid</span></td></tr>
-            <tr><td>120</td><td>Mahi</td><td>IT</td><td><span class="tag due">Due</span></td></tr>
+            <tr><td>112</td><td>Rafi</td><td>CSE</td><td><span class="tag paid">Paid</span></td></tr>
+            <tr><td>123</td><td>Renu</td><td>EEE</td><td><span class="tag due">Due</span></td></tr>
+            <tr><td>526</td><td>Alvi</td><td>BBA</td><td><span class="tag paid">Paid</span></td></tr>
+            <tr><td>286</td><td>Ria</td><td>IT</td><td><span class="tag due">Due</span></td></tr>
           </tbody>
         </table></div>
         <p class="tbl-note">These four records live in the <b>students[]</b> array in the sketch.</p>
@@ -221,44 +221,56 @@
 <pre><code class="language-cpp">#include &lt;LiquidCrystal.h&gt;
 #include &lt;Keypad.h&gt;
 
-// LCD pins (RS, E, D4, D5, D6, D7)
+// LCD pin setup (RS, E, D4, D5, D6, D7)
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-// Keypad setup
-const byte ROWS = 4;
-const byte COLS = 3;
+// Keypad configuration (4x3 Keypad)
+const byte ROWS = 4; 
+const byte COLS = 3; 
 char keys[ROWS][COLS] = {
   {'1','2','3'},
   {'4','5','6'},
   {'7','8','9'},
   {'*','0','#'}
 };
-byte rowPins[ROWS] = {9, 8, 7, 6};
-byte colPins[COLS] = {A3, A2, A1};
+
+byte rowPins[ROWS] = {9, 8, 7, 6}; 
+byte colPins[COLS] = {A3, A2, A1}; 
+
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
+// Pin configurations
 const int buzzerPin = 13;
 const int greenLed = A4;
 const int redLed = A5;
 
-// Student database
+// Database structure
 struct Student {
-  String id, name, dept, payment;
+  String id;
+  String name;
+  String dept;
+  String payment;
 };
+
+// You can add more students here
 Student students[] = {
-  {"159", "Ankur", "CSE", "Paid"},
-  {"113", "Manik", "EEE", "Due"},
-  {"153", "Tina", "BBA", "Paid"},
-  {"120", "Mahi", "IT", "Due"}
+  {"112", "Rafi", "CSE", "Paid"},
+  {"123", "Renu", "EEE", "Due"},
+  {"526", "Alvi", "BBA", "Paid"},
+  {"286", "Ria", "IT", "Due"}
 };
 int totalStudents = 4;
+
 String enteredID = "";
 
 void setup() {
   pinMode(buzzerPin, OUTPUT);
   pinMode(greenLed, OUTPUT);
   pinMode(redLed, OUTPUT);
+  
   lcd.begin(16, 2);
+  lcd.clear();
+  lcd.setCursor(0, 0);
   lcd.print("Smart ID System");
   lcd.setCursor(0, 1);
   lcd.print("Enter 3-Digit ID");
@@ -268,40 +280,48 @@ void setup() {
 
 void loop() {
   char key = keypad.getKey();
-  if (!key) return;
-
-  if (key == '*') {            // clear
-    enteredID = "";
-    showHomeScreen();
-    return;
-  }
-
-  if (key == '#') {            // submit
-    if (enteredID.length() == 3) {
-      verifyStudent(enteredID);
-    } else {
-      lcd.clear();
-      lcd.print("Error: Need 3-ID");
-      digitalWrite(redLed, HIGH);
-      tone(buzzerPin, 1000, 500);
-      delay(1500);
-      digitalWrite(redLed, LOW);
+  
+  if (key) {
+    // Clear input if '*' is pressed
+    if (key == '*') {
+      enteredID = "";
       showHomeScreen();
+      return;
     }
-    enteredID = "";
-    return;
-  }
-
-  if (isDigit(key) &amp;&amp; enteredID.length() &lt; 3) {
-    enteredID += key;
-    lcd.setCursor(0, 1);
-    lcd.print("ID: " + enteredID);
+    
+    // Start search if '#' is pressed
+    if (key == '#') {
+      if (enteredID.length() == 3) {
+        verifyStudent(enteredID);
+      } else {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Error: Need 3-ID");
+        digitalWrite(redLed, HIGH);
+        tone(buzzerPin, 1000, 500);
+        delay(1500);
+        digitalWrite(redLed, LOW);
+        showHomeScreen();
+      }
+      enteredID = "";
+      return;
+    }
+    
+    // While typing numbers
+    if (isDigit(key)) {
+      if (enteredID.length() &lt; 3) {
+        enteredID += key;
+        lcd.setCursor(0, 1);
+        lcd.print("ID: " + enteredID);
+      }
+    }
   }
 }
 
 void showHomeScreen() {
   lcd.clear();
-  lcd.print("Scan ID & Press#");
+  lcd.setCursor(0, 0);
+  lcd.print("Scan ID &amp; Press#");
   lcd.setCursor(0, 1);
   lcd.print("ID: ");
 }
@@ -309,32 +329,42 @@ void showHomeScreen() {
 void verifyStudent(String id) {
   bool found = false;
   lcd.clear();
-
+  
   for (int i = 0; i &lt; totalStudents; i++) {
     if (students[i].id == id) {
       found = true;
+      // If successful, green LED and positive beep sound
       digitalWrite(greenLed, HIGH);
       tone(buzzerPin, 2000, 200);
       delay(300);
       tone(buzzerPin, 2500, 200);
+      
+      // Display student information and Valid status
+      lcd.setCursor(0, 0);
       lcd.print(students[i].name + " (" + students[i].dept + ")");
       lcd.setCursor(0, 1);
       lcd.print("Status: Valid");
-      delay(4000);
+      
+      delay(4000); // Keep info on display for 4 seconds
       digitalWrite(greenLed, LOW);
       break;
     }
   }
-
+  
   if (!found) {
+    // If ID doesn't match, red LED and error beep sound
     digitalWrite(redLed, HIGH);
-    tone(buzzerPin, 500, 800);
+    tone(buzzerPin, 500, 800); // Low pitch beep sound
+    
+    lcd.setCursor(0, 0);
     lcd.print("ID: " + id);
     lcd.setCursor(0, 1);
     lcd.print("Invalid ID!");
+    
     delay(3000);
     digitalWrite(redLed, LOW);
   }
+  
   showHomeScreen();
 }</code></pre>
     </div>
@@ -348,7 +378,13 @@ void verifyStudent(String id) {
       <div class="col-md-6 reveal">
         <h2>Tools used</h2>
         <div class="stack">
-          <span>Arduino IDE</span><span>C++</span><span>Tinkercad</span><span>HTML5</span><span>CSS3</span><span>Bootstrap 5</span><span>JavaScript</span>
+          <span>Arduino IDE</span>
+          <span>C++</span>
+          <span>Tinkercad</span>
+          <!-- <span>HTML5</span>
+          <span>CSS3</span>
+          <span>Bootstrap 5</span>
+          <span>JavaScript</span> -->
         </div>
       </div>
       <div class="col-md-6 reveal">
@@ -372,7 +408,9 @@ void verifyStudent(String id) {
 
 <footer>
   <div class="container d-flex flex-wrap justify-content-between gap-2">
-    <span>Powered by <a href="#" target="_blank" rel="noopener">Dev.Ankur</a></span>
+    <span>Powered by <a href="https://www.facebook.com/profile.php?id=61596213878241" target="_blank" rel="noopener">Tech Solution WebStratix</a><br>
+    <b>Email: info.webstratix@gmail.com</b>
+    </span>
     <span>Arduino UNO, Keypad and LCD</span>
   </div>
 </footer>
@@ -387,7 +425,7 @@ void verifyStudent(String id) {
 <script src="js/script.js"></script>
 
 <!-- Web inspect Off code -->
-     <script>
+<script>
     // 1. Right Click Block
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
