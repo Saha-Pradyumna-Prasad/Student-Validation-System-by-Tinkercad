@@ -67,10 +67,10 @@ $('copyBtn').onclick = async e => {
 
 /* ---------- Live Arduino demo ---------- */
 const DB = {
-  159: { name: 'Ankur', dept: 'CSE', pay: 'Paid' },
-  113: { name: 'Manik', dept: 'EEE', pay: 'Due' },
-  153: { name: 'Tina',  dept: 'BBA', pay: 'Paid' },
-  120: { name: 'Mahi',  dept: 'IT',  pay: 'Due' }
+  112: { name: 'Rafi', dept: 'CSE', pay: 'Paid' },
+  123: { name: 'Renu', dept: 'EEE', pay: 'Due' },
+  526: { name: 'Alvi', dept: 'BBA', pay: 'Paid' },
+  286: { name: 'Ria',  dept: 'IT',  pay: 'Due' }
 };
 const L1 = $('lcdLine1'), L2 = $('lcdLine2'), lcd = q('.lcd');
 const gl = $('greenLed'), rl = $('redLed'), bz = $('buzzer');
